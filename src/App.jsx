@@ -7,139 +7,125 @@ function App() {
   const { loginWithRedirect, logout, user, isAuthenticated, isLoading } =
     useAuth0();
 
-  const [task, setTask] = useState("");
-  const [lastDate, setLastDate] = useState("");
-  const [tasks, setTasks] = useState([]);
-  const [editIndex, setEditIndex] = useState(null);
-  const [showDebrief, setShowDebrief] = useState(false);
-  const [theme, setTheme] = useState("dark");
+  const [text, setText] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [list, setList] = useState([]);
+  const [editIdx, setEditIdx] = useState(null);
+  const [showSummary, setShowSummary] = useState(false);
+  const [mode, setMode] = useState("dark");
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+  const switchMode = () => {
+    setMode(mode === "dark" ? "light" : "dark");
   };
 
-  // fetch tasks whenever user logs in
   useEffect(() => {
     if (isAuthenticated && user) {
-      fetchTasks();
+      loadData();
     }
   }, [isAuthenticated, user]);
 
-  // fetch todos only for this user
-  const fetchTasks = async () => {
+  const loadData = async () => {
     const { data, error } = await supabase
       .from("todos")
       .select("*")
       .eq("user_email", user.email)
       .order("created_at", { ascending: true });
 
-    if (error) {
-      console.error("❌ Error fetching tasks:", error);
+    if (!error) {
+      setList(data);
     } else {
-      setTasks(data);
+      console.error(error);
     }
   };
 
-  const handleAddOrUpdate = async () => {
-    if (!task.trim()) return;
+  const addOrUpdate = async () => {
+    if (!text.trim()) return;
 
-    if (editIndex !== null) {
-      // update
-      const t = tasks[editIndex];
+    if (editIdx !== null) {
+      const item = list[editIdx];
       const { error } = await supabase
         .from("todos")
-        .update({ text: task, last_date: lastDate || null })
-        .eq("id", t.id)
+        .update({ text: text, last_date: deadline || null })
+        .eq("id", item.id)
         .eq("user_email", user.email);
 
       if (!error) {
-        const updated = [...tasks];
-        updated[editIndex].text = task;
-        updated[editIndex].last_date = lastDate || null;
-        setTasks(updated);
-        setEditIndex(null);
-      } else {
-        console.error("❌ Error updating task:", error);
+        const updated = [...list];
+        updated[editIdx].text = text;
+        updated[editIdx].last_date = deadline || null;
+        setList(updated);
+        setEditIdx(null);
       }
     } else {
-      // insert new
       const { data, error } = await supabase
         .from("todos")
         .insert([
           {
-            text: task,
+            text: text,
             date: new Date().toLocaleDateString(),
-            last_date: lastDate || null,
-            user_email: user.email, // directly linked to user
+            last_date: deadline || null,
+            user_email: user.email,
           },
         ])
         .select();
 
       if (!error && data) {
-        setTasks([...tasks, data[0]]);
-      } else {
-        console.error("❌ Error adding task:", error);
+        setList([...list, data[0]]);
       }
     }
 
-    setTask("");
-    setLastDate("");
+    setText("");
+    setDeadline("");
   };
 
-  const toggleComplete = async (index) => {
-    const t = tasks[index];
+  const toggleDone = async (i) => {
+    const item = list[i];
     const { error } = await supabase
       .from("todos")
-      .update({ completed: !t.completed })
-      .eq("id", t.id)
+      .update({ completed: !item.completed })
+      .eq("id", item.id)
       .eq("user_email", user.email);
 
     if (!error) {
-      const updated = [...tasks];
-      updated[index].completed = !t.completed;
-      setTasks(updated);
-    } else {
-      console.error("❌ Error toggling complete:", error);
+      const updated = [...list];
+      updated[i].completed = !item.completed;
+      setList(updated);
     }
   };
 
-  const handleEdit = (index) => {
-    setTask(tasks[index].text);
-    setLastDate(tasks[index].last_date || "");
-    setEditIndex(index);
+  const editItem = (i) => {
+    setText(list[i].text);
+    setDeadline(list[i].last_date || "");
+    setEditIdx(i);
   };
 
-  const handleDelete = async (index) => {
-    const t = tasks[index];
+  const deleteItem = async (i) => {
+    const item = list[i];
     const { error } = await supabase
       .from("todos")
       .delete()
-      .eq("id", t.id)
+      .eq("id", item.id)
       .eq("user_email", user.email);
 
     if (!error) {
-      setTasks(tasks.filter((_, i) => i !== index));
-    } else {
-      console.error("❌ Error deleting task:", error);
+      setList(list.filter((_, idx) => idx !== i));
     }
   };
 
-  const completedTasks = tasks.filter((t) => t.completed);
-  const notCompletedTasks = tasks.filter((t) => !t.completed);
+  const done = list.filter((t) => t.completed);
+  const notDone = list.filter((t) => !t.completed);
 
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div className={theme === "light" ? "light-mode" : ""}>
+    <div className={mode === "light" ? "light-mode" : ""}>
       <div className="App">
-        {/* Theme toggle */}
-        <div className={`theme-switch ${theme}`} onClick={toggleTheme}>
-          {theme === "dark" ? "🌙" : "☀️"}
+        <div className={`theme-switch ${mode}`} onClick={switchMode}>
+          {mode === "dark" ? "🌙" : "☀️"}
         </div>
 
         <h1>To-Do</h1>
 
-        {/* Auth Buttons */}
         {!isAuthenticated ? (
           <button onClick={() => loginWithRedirect()}>Log In</button>
         ) : (
@@ -155,31 +141,29 @@ function App() {
 
         {isAuthenticated && (
           <>
-            {/* Task Input */}
             <div className="input-group">
               <input
-                value={task}
-                onChange={(e) => setTask(e.target.value)}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
                 placeholder="Enter task"
               />
               <input
                 type="date"
-                value={lastDate}
-                onChange={(e) => setLastDate(e.target.value)}
+                value={deadline}
+                onChange={(e) => setDeadline(e.target.value)}
               />
-              <button className="btn-primary" onClick={handleAddOrUpdate}>
-                {editIndex !== null ? "Update" : "Add"}
+              <button className="btn-primary" onClick={addOrUpdate}>
+                {editIdx !== null ? "Update" : "Add"}
               </button>
             </div>
 
-            {/* Task List */}
             <ul>
-              {tasks.map((t, i) => (
+              {list.map((t, i) => (
                 <li key={t.id}>
                   <input
                     type="checkbox"
                     checked={t.completed}
-                    onChange={() => toggleComplete(i)}
+                    onChange={() => toggleDone(i)}
                   />
                   <span
                     style={{
@@ -194,34 +178,30 @@ function App() {
                       </span>
                     )}
                   </span>
-                  <button className="btn-edit" onClick={() => handleEdit(i)}>
+                  <button className="btn-edit" onClick={() => editItem(i)}>
                     Edit
                   </button>
-                  <button
-                    className="btn-delete"
-                    onClick={() => handleDelete(i)}
-                  >
+                  <button className="btn-delete" onClick={() => deleteItem(i)}>
                     X
                   </button>
                 </li>
               ))}
             </ul>
 
-            {/* Daily Debrief */}
             <button
               className="debrieftoggle"
-              onClick={() => setShowDebrief(!showDebrief)}
+              onClick={() => setShowSummary(!showSummary)}
             >
-              {showDebrief ? "Hide" : "Show"} Daily Debrief
+              {showSummary ? "Hide" : "Show"} Daily Debrief
             </button>
 
-            {showDebrief && (
+            {showSummary && (
               <div className="debrief">
                 <h2>Daily Debrief</h2>
                 <h3>✅ Completed Today</h3>
                 <ul>
-                  {completedTasks.length > 0 ? (
-                    completedTasks.map((t) => <li key={t.id}>{t.text}</li>)
+                  {done.length > 0 ? (
+                    done.map((t) => <li key={t.id}>{t.text}</li>)
                   ) : (
                     <p>No tasks completed today.</p>
                   )}
@@ -229,8 +209,8 @@ function App() {
 
                 <h3>❌ Not Completed</h3>
                 <ul>
-                  {notCompletedTasks.length > 0 ? (
-                    notCompletedTasks.map((t) => (
+                  {notDone.length > 0 ? (
+                    notDone.map((t) => (
                       <li key={t.id}>
                         {t.text} ({t.date})
                         {t.last_date && (

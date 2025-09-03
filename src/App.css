@@ -1,9 +1,6 @@
-/* App.css */
-
-/* General Styles */
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #121212; /* Default background for dark mode */
+  background-color: #121212;
   color: #e0e0e0;
   margin: 0;
   padding: 20px;
@@ -14,7 +11,6 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-/* Light Mode Styles */
 .light-mode {
   background-color: #f0f2f5;
   color: #333;
@@ -25,9 +21,7 @@ body {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.light-mode h1 {
-  color: #1a73e8;
-}
+.light-mode h1 { color: #1a73e8; }
 
 .light-mode input[type="text"],
 .light-mode input[type="date"] {
@@ -46,25 +40,11 @@ body {
   border-left-color: #1a73e8;
 }
 
-.light-mode .debrieftoggle {
-  background-color: #4CAF50;
-  color: white;
-}
+.light-mode .debrieftoggle { background-color: #4CAF50; color: white; }
+.light-mode .debrieftoggle:hover { background-color: #45a049; }
+.light-mode .debrief { background-color: #e9ecef; }
+.light-mode .debrief h2 { color: #1a73e8; border-bottom-color: #ccc; }
 
-.light-mode .debrieftoggle:hover {
-  background-color: #45a049;
-}
-
-.light-mode .debrief {
-  background-color: #e9ecef;
-}
-
-.light-mode .debrief h2 {
-  color: #1a73e8;
-  border-bottom-color: #ccc;
-}
-
-/* Dark Mode (Default) */
 .App {
   background-color: #1e1e1e;
   padding: 25px;
@@ -83,7 +63,6 @@ h1 {
   transition: color 0.3s;
 }
 
-/* Consistent button styles for all modes */
 button {
   padding: 12px 20px;
   background-color: #bb86fc;
@@ -95,26 +74,12 @@ button {
   transition: background-color 0.3s, transform 0.1s;
 }
 
-button:hover {
-  background-color: #9c68e8;
-}
+button:hover { background-color: #9c68e8; }
+button:active { transform: translateY(1px); }
 
-button:active {
-  transform: translateY(1px);
-}
-
-/* Specific button styles */
-.btn-primary {
-  background-color: #bb86fc;
-}
-
-.btn-edit {
-  background-color: #4db6ac;
-}
-
-.btn-delete {
-  background-color: #f06292;
-}
+.btn-primary { background-color: #bb86fc; }
+.btn-edit { background-color: #4db6ac; }
+.btn-delete { background-color: #f06292; }
 
 .debrieftoggle {
   width: 100%;
@@ -123,8 +88,6 @@ button:active {
   color: #121212;
 }
 
-
-/* Input group */
 .input-group {
   display: flex;
   align-items: center;
@@ -132,8 +95,8 @@ button:active {
   margin-bottom: 20px;
 }
 
-.input-group input[type="text"] {
-  flex: 2;
+.input-group input[type="text"],
+.input-group input[type="date"] {
   padding: 12px;
   border: 2px solid #555;
   border-radius: 5px;
@@ -142,15 +105,8 @@ button:active {
   color: #e0e0e0;
 }
 
-.input-group input[type="date"] {
-  flex: 1;
-  padding: 12px;
-  border: 2px solid #555;
-  border-radius: 5px;
-  font-size: 1rem;
-  background-color: #333;
-  color: #e0e0e0;
-}
+.input-group input[type="text"] { flex: 2; }
+.input-group input[type="date"] { flex: 1; }
 
 .light-mode .input-group input[type="text"],
 .light-mode .input-group input[type="date"] {
@@ -164,12 +120,7 @@ button:active {
   border-color: #1a73e8;
 }
 
-/* Task list styles */
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin-top: 25px;
-}
+ul { list-style-type: none; padding: 0; margin-top: 25px; }
 
 li {
   display: flex;
@@ -183,34 +134,10 @@ li {
   transition: box-shadow 0.3s, border-left-color 0.3s, background-color 0.3s;
 }
 
-li:hover {
-  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.08);
-}
-
-input[type="checkbox"] {
-  transform: scale(1.5);
-  margin-right: 15px;
-  cursor: pointer;
-}
-
-li span {
-  flex-grow: 1;
-  font-size: 1.1rem;
-}
-
-li button {
-  margin-left: 10px;
-  padding: 8px 12px;
-  font-size: 0.8rem;
-}
-
-
-.debrieftoggle {
-  width: 100%;
-  margin-top: 20px;
-  background-color: #03dac6;
-  color: #121212;
-}
+li:hover { box-shadow: 0 2px 8px rgba(255, 255, 255, 0.08); }
+input[type="checkbox"] { transform: scale(1.5); margin-right: 15px; cursor: pointer; }
+li span { flex-grow: 1; font-size: 1.1rem; }
+li button { margin-left: 10px; padding: 8px 12px; font-size: 0.8rem; }
 
 .debrief {
   margin-top: 40px;
@@ -227,39 +154,14 @@ li button {
   margin-bottom: 20px;
 }
 
-.debrief h3 {
-  margin-top: 20px;
-  color: #e0e0e0;
-}
+.debrief h3 { margin-top: 20px; color: #e0e0e0; }
+.debrief ul { padding-left: 20px; }
+.debrief li { background-color: transparent; padding: 5px 0; border-left: none; border-radius: 0; }
+.debrief li button { background-color: #f06292; font-size: 0.7rem; padding: 5px 8px; }
+.debrief p { font-style: italic; color: #b0b0b0; }
 
-.debrief ul {
-  padding-left: 20px;
-}
+.completed { text-decoration: line-through; color: #888; }
 
-.debrief li {
-  background-color: transparent;
-  padding: 5px 0;
-  border-left: none;
-  border-radius: 0;
-}
-
-.debrief li button {
-  background-color: #f06292;
-  font-size: 0.7rem;
-  padding: 5px 8px;
-}
-
-.debrief p {
-  font-style: italic;
-  color: #b0b0b0;
-}
-
-.completed {
-  text-decoration: line-through;
-  color: #888;
-}
-
-/* Toggle Switch Styling */
 .theme-switch {
   position: absolute;
   top: 20px;
@@ -288,16 +190,6 @@ li button {
   transition: transform 0.3s ease-in-out;
 }
 
-.theme-switch.light .toggle-ball {
-  transform: translateX(35px);
-}
-
-.theme-switch .icon {
-  width: 20px;
-  height: 20px;
-  fill: #fff;
-}
-
-.theme-switch.light .icon {
-  fill: #121212;
-}
+.theme-switch.light .toggle-ball { transform: translateX(35px); }
+.theme-switch .icon { width: 20px; height: 20px; fill: #fff; }
+.theme-switch.light .icon { fill: #121212; }
