@@ -10,7 +10,7 @@ root.render(
     domain="dev-enthd3om814sf1s2.us.auth0.com"
     clientId="JCLZBRADDncAaU8HzjWFGfbNgog7cq73"
     authorizationParams={{
-      redirect_uri: "http://localhost:3000/",
+      redirect_uri: "https://todo-gdg.vercel.app/"
     }}
   >
     <App />
