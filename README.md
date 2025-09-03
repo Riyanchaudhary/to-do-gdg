@@ -1,12 +1,55 @@
-# React + Vite
+# To-Do App ✅
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern **To-Do List application** built using **React.js**, **Supabase (PostgreSQL backend)**, and **Auth0 authentication**.  
+Deployed on **Vercel**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 🔐 **Authentication** using Auth0  
+  - Login / Logout with Auth0 provider  
+  - User-specific tasks stored securely in Supabase  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 📝 **Task Management**  
+  - Add, edit, delete tasks  
+  - Mark tasks as complete/incomplete  
+  - Optional **deadline date** for each task  
+
+- 📊 **Daily Debrief**  
+  - View completed vs not completed tasks at the end of the day  
+
+- 🎨 **UI Features**  
+  - Dark/Light theme toggle  
+  - Deadline shown alongside each task  
+  - Simple and clean layout  
+
+- ☁️ **Supabase Database**  
+  - `todos` table with fields:  
+    ```sql
+    id (uuid) PRIMARY KEY
+    text (text)
+    date (text)
+    last_date (date)
+    completed (boolean)
+    user_email (text)
+    created_at (timestamp)
+    ```
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React.js (Vite)  
+- **Database & API:** Supabase (PostgreSQL)  
+- **Authentication:** Auth0  
+- **Hosting:** Vercel  
+
+---
+
+## ⚙️ Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Riyanchaudhary/to-do-gdg.git
+   cd to-do-gdg
